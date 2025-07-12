@@ -67,7 +67,45 @@ let listaFumetti = [];
 //Questa l'ho fatta in due modi, il secondo è quello più pulito e carino da vedere rispetto al primo e comunque ottimale
 //semplicemtne un foreach che va ad inserire all'interno del json che mi so creato tutti i valori che sono stati dati ai campi
 //che abbiamo scorrendoli uno ad uno
+async function onClickPopolaDatiDipendenteMese() {
+    const dati = ['nome', 'cognome', 'ArticoliVenduti', 'nomeNeg', 'fumetto', 'frase'];
+    let datiInseriti = {};
 
+    dati.forEach(id => {
+        const idDati = document.getElementById(id);
+        datiInseriti[id] = idDati.value;
+    });
+
+    console.log('Dati dipendente da inviare:', datiInseriti);
+
+    try {
+        const response = await fetch('http://localhost:3000/api/employees', { // Make sure this URL matches your backend
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(datiInseriti)
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log('Dipendente salvato con successo:', result);
+            // Clear fields after successful save
+            dati.forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            alert('Dati dipendente salvati con successo!');
+        } else {
+            console.error('Errore durante il salvataggio del dipendente:', response.statusText);
+            alert('Errore durante il salvataggio del dipendente.');
+        }
+    } catch (error) {
+        console.error('Errore di rete o del server:', error);
+        alert('Errore di connessione al server.');
+    }
+}
+
+/*
 function onClickPopolaDatiDipendenteMese(){
   /*
     const nome = document.getElementById('nome').value;
@@ -91,7 +129,7 @@ function onClickPopolaDatiDipendenteMese(){
     console.log(document.getElementById('fumetto').value = '');
     console.log(document.getElementById('frase').value = '');
 */
- 
+
     
     const dati = ['nome','cognome','ArticoliVenduti','nomeNeg','fumetto','frase'];
     
@@ -132,6 +170,47 @@ document.addEventListener('DOMContentLoaded',(event)=>{
 //Quest'altra ad ogni click di inserisci fumetto va ad inserire dentro la lista fumetti che abbiamo i fumetti che andiamo a scrivere
 // sae uno dei due campi tra nome e autore è vuoto non viene inserito nulla ed esce l'alert
 
+async function creaFumetto() {
+    const nomeFumetto = document.getElementById('fumettonome').value;
+    const nomeAutore = document.getElementById('autore').value;
+
+    if (nomeFumetto === '' || nomeAutore === '') {
+        alert("Riempi prima i campi");
+        return;
+    }
+
+    const fumettoData = {
+        nomeFumetto: nomeFumetto,
+        nomeAutore: nomeAutore
+    };
+
+    try {
+        const response = await fetch('http://localhost:3000/api/comics', { // Make sure this URL matches your backend
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(fumettoData)
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log('Fumetto salvato con successo:', result);
+            // Add to local list after successful save (optional, you could re-fetch from DB)
+            listaFumetti.push({ nome: nomeFumetto, autore: nomeAutore }); // Update local list
+            document.getElementById('fumettonome').value = '';
+            document.getElementById('autore').value = '';
+            alert('Fumetto inserito con successo!');
+        } else {
+            console.error('Errore durante il salvataggio del fumetto:', response.statusText);
+            alert('Errore durante il salvataggio del fumetto.');
+        }
+    } catch (error) {
+        console.error('Errore di rete o del server:', error);
+        alert('Errore di connessione al server.');
+    }
+}
+/*
 function creaFumetto(){
     const nomeFumetto = document.getElementById('fumettonome').value;
     const nomeAutore = document.getElementById('autore').value;
@@ -154,10 +233,10 @@ function creaFumetto(){
     document.getElementById('fumettonome').value = '';
     document.getElementById('autore').value = '';
 }
-
+*/
 //Quest'altra invece mostra a schermo i vari fumetti aggiunti e l'ho fatta come mi hai detto con il for, quindi ad ogni fumetti aggiunto
 //la lista aumenta di uno e viene creato un elemento della lista ul e aggiunto tramite un append
-
+/*
 function visualizzaFumetti(){
     const bxFumetti = document.getElementById('bxFumetti');
     bxFumetti.innerHTML = '';
@@ -171,4 +250,30 @@ function visualizzaFumetti(){
     }
 
     bxFumetti.appendChild(ul);
+}*/
+
+async function visualizzaFumetti() {
+    const bxFumetti = document.getElementById('bxFumetti');
+    bxFumetti.innerHTML = ''; // Clear existing list
+
+    try {
+        const response = await fetch('http://localhost:3000/api/comics'); // Fetch from your backend
+        if (response.ok) {
+            const comics = await response.json();
+            
+            const ul = document.createElement('ul');
+            comics.forEach(comic => {
+                const li = document.createElement('li');
+                li.textContent = comic.comic_name; // Assuming your API returns 'comic_name'
+                ul.appendChild(li);
+            });
+            bxFumetti.appendChild(ul);
+        } else {
+            console.error('Errore durante il recupero dei fumetti:', response.statusText);
+            alert('Errore durante il recupero dei fumetti.');
+        }
+    } catch (error) {
+        console.error('Errore di rete o del server:', error);
+        alert('Errore di connessione al server.');
+    }
 }
