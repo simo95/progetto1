@@ -8,51 +8,94 @@
   <style>
     body {
       padding-top: 50px;
-      background-color: #f8f9fa;
+      background-color: gray;
     }
     .container {
       max-width: 600px;
     }
+    .bordo-verde {
+            border: 2px solid green;
+        }
+    .form-control{
+      color: gray;
+    }
   </style>
 </head>
+
 <body>
   <div class="container">
-    <h1 class="text-center mb-4">Anagrafica Negozio di Fumetti</h1>
+    <h1 class="text-center mb-4">Negozio di fumetti</h1>
     <form id="storeForm">
-      <div class="form-group">
-        <label for="nome">Nome del Negozio</label>
-        <input type="text" class="form-control" id="nome" name="nome" placeholder="Inserisci il nome" required>
+      <div class="row">
+        <div class="col">
+          <label for="nome">Nome</label>
+          <input type="text" class="form-control" id="nome" name="nome" placeholder="Inserisci il nome" required>
+        </div>
+        <div class="col">
+          <label for="cognome">Cognome</label>
+          <input type="text" class="form-control" id="cognome" name="nome" placeholder="Inserisci il cognome" required>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="indirizzo">Indirizzo</label>
-        <input type="text" class="form-control" id="indirizzo" name="indirizzo" placeholder="Inserisci l'indirizzo" required>
+      <div class="row">
+        <div class="col">
+          <label for="cognome">N° Art.Venduti</label>
+          <input type="number" class="form-control" id="ArticoliVenduti" name="ArticoliVenduti" placeholder="Inserisci numero articoli" required>
+        </div>
+        <div class="col">
+          <label for="cognome">Nome Negozio</label>
+          <input type="text" class="form-control" id="nomeNeg" name="nomeNeg" placeholder="Inserisci il nome del Negozio" required>
+        </div>
+        <div class="col">
+          <label for="cognome">Fumetto preferito</label>
+          <input type="text" class="form-control" id="fumetto" name="fumetto" placeholder="Inserisci il fumetto preferito" required>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="citta">Città</label>
-        <input type="text" class="form-control" id="citta" name="citta" placeholder="Inserisci la città" required>
+      <div>
+        <label for="frase">Frase motivazionale</label>
+        <textarea type= "text" class="form-control" id="frase" placeholder="Inserisci qui la tua frase motivazionale"></textarea>
       </div>
-      <div class="form-group">
-        <label for="telefono">Telefono</label>
-        <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Inserisci il numero di telefono" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Inserisci l'email" required>
-      </div>
-      <button type="submit" class="btn btn-primary btn-block">Salva Anagrafica</button>
+      
     </form>
+    <button type="submit" class="btn btn-primary btn-block" onclick="onClickPopolaDatiDipendenteMese()">Salva Anagrafica</button>
 
-    <button id="oggetto" class="mt-5 btn-primary btn-block">Crea Oggetto</button>
+    <h1 class="text-center mb-4">Anagrafica fumetto</h1>
+    <form id="storeForm">
+      <div class="row">
+        <div class="col">
+          <label for="nome">Fumetto</label>
+          <input type="text" class="form-control" id="fumettonome" name="fumettonome" placeholder="Inserisci il nome" required>
+        </div>
+        <div class="col">
+          <label for="cognome">Autore</label>
+          <input type="text" class="form-control" id="autore" name="autore" placeholder="Inserisci il nome dell'Autore" required>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="cognome">N° Art.Venduti</label>
+          <input type="number" class="form-control" id="ArticoliVenduti" name="ArticoliVenduti" placeholder="Inserisci numero articoli" required>
+        </div>
+        <div class="col">
+          <label for="cognome">Nome Negozio</label>
+          <input type="text" class="form-control" id="nomeNeg" name="nomeNeg" placeholder="Inserisci il nome del Negozio" required>
+        </div>
+        <div class="col">
+          <label for="cognome">Fumetto preferito</label>
+          <input type="text" class="form-control" id="fumettopref" name="fumettopref" placeholder="Inserisci il fumetto preferito" required>
+        </div>
+      </div>
 
-    <!-- Sezione per visualizzare i dati inseriti -->
-    <div id="result" class="mt-5"></div>
+    <button id="oggetto" class="mt-5 btn-primary btn-block" onclick="creaFumetto()">Inserisci fumetto</button>
+    <button id="oggetto" class="mt-5 btn-primary btn-block" onclick="visualizzaFumetti()">Visualizza fumetti inseriti </button>
 
-    <div id="bxFumetti" class="mt-5"></div>
+    <div id="bxFumetti" class="mt-5">
+      
+    </div>
   </div>
-
-  <!-- Inclusione del file JS esterno -->
-  <script src="index.js"></script>
-  <!-- Bootstrap JS (link online) -->
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Inclusione del file JS esterno -->
+    <script src="index.js"></script>
+    <!-- Bootstrap JS (link online) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+  

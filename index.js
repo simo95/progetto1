@@ -1,15 +1,3 @@
-let listaFumetti = [];
-
-function onClickButtonCreaOggetto(){
-
-    let persona = {};
-    persona.nome = "Franco";
-    persona.cognome = "Gennaio";
-    persona.eta = 45;
-
-    console.log("Stampiamo la persona!", persona)
-}
-
 //TODO
 //Creare sezione Dipendente del mese con nome, cognome, articoli venduti, sede negozio, frase motivazionale
 
@@ -21,16 +9,6 @@ FRASE MOTIVAZIONALE (text area)
 
 BOTTONE "POPOLA DATI DIPENDENTE MESE"
 */
-
-function onClickPopolaDatiDipendenteMese(){
-    // popolare campi del dipendente.
-}
-
-function onSetDatiPersonaliDipendenteMese(){
-    // cambiare nome e cognome dopo 10 secondi che il ready è stato caricato.
-    // quando cambi nome e cognome dipendente mi devi colorare di verde il bordo degli elementi cambiati. Il verde deve durare 1.5 secondi.
-}
-
 
 //CREARE FUNZIONE CHE:
 /**
@@ -82,38 +60,115 @@ function onSetDatiPersonaliDipendenteMese(){
     OVVIAMENTE QUANDO FINISCI DI INSERIRE QUALSIASI ANAGRAFICA, I CAMPI DEVONO ESSERE SVUOTATI
 */
 
+let listaFumetti = [];
 
-$(document).ready(function(){
+// Funzione per popolare i dati riguardanti il dipendente
 
-    $("#storeForm").on("submit", function(e){
-      
-      // Validazione semplice del formato del telefono
-      let telefono = $("#telefono").val();
+//Questa l'ho fatta in due modi, il secondo è quello più pulito e carino da vedere rispetto al primo e comunque ottimale
+//semplicemtne un foreach che va ad inserire all'interno del json che mi so creato tutti i valori che sono stati dati ai campi
+//che abbiamo scorrendoli uno ad uno
 
-      console.log("Telefono casa:", telefono)
+function onClickPopolaDatiDipendenteMese(){
+  /*
+    const nome = document.getElementById('nome').value;
+    const cognome = document.getElementById('cognome').value;
+    const numArticoli = document.getElementById('ArticoliVenduti').value;
+    const nomeNeg = document.getElementById('nomeNeg').value;
+    const fumetto = document.getElementById('fumetto').value;
+    const frase = document.getElementById('frase').value;
+    
+    console.log('nome: '+nome);
+    console.log('cognome: '+cognome);
+    console.log('ArticoliVenduti: '+ArticoliVenduti);
+    console.log('nomeNeg: '+nomeNeg);
+    console.log('fumetto: '+fumetto);
+    console.log('frase: '+frase);
 
-      let regexTelefono = /^[0-9\s\+\-]+$/;
-      if (!regexTelefono.test(telefono)) {
-        alert("Il numero di telefono non è valido. Inserisci solo numeri, spazi, + o -.");
-        return; // Esce dallo script se il telefono non è valido
-      }
-  
-      // Raccogliamo i dati del form
-      let nome = $("#nome").val();
-      let indirizzo = $("#indirizzo").val();
-      let citta = $("#citta").val();
-      let email = $("#email").val();
-  
-      // Costruiamo una stringa HTML per visualizzare i dati
-      let resultHtml = "<h2>Dati del Negozio Inseriti:</h2>" +
-        "<p><strong>Nome:</strong> " + nome + "<br>" +
-        "<strong>Indirizzo:</strong> " + indirizzo + "<br>" +
-        "<strong>Città:</strong> " + citta + "<br>" +
-        "<strong>Telefono:</strong> " + telefono + "<br>" +
-        "<strong>Email:</strong> " + email + "</p>";
-  
-      // Mostriamo il risultato nella sezione apposita
-      $("#result").html(resultHtml);
-    });
-});
-  
+    console.log(document.getElementById('nome').value = '');
+    console.log(document.getElementById('cognome').value = '');
+    console.log(document.getElementById('ArticoliVenduti').value = '');
+    console.log(document.getElementById('nomeNeg').value = '');
+    console.log(document.getElementById('fumetto').value = '');
+    console.log(document.getElementById('frase').value = '');
+*/
+ 
+    
+    const dati = ['nome','cognome','ArticoliVenduti','nomeNeg','fumetto','frase'];
+    
+    let datiInseriti = {};
+
+    dati.forEach(id => {
+        const idDati = document.getElementById(id);
+        datiInseriti[id] = idDati.value;
+        idDati.value = '';
+        }
+    );
+
+    console.log('DAti dipendente: ', datiInseriti);
+    
+}
+
+function onSetDatiPersonaliDipendenteMese(){
+    const nome = document.getElementById('nome');
+    const cognome = document.getElementById('cognome');
+
+    nome.value = '';
+    cognome.value = '';
+
+
+    nome.classList.add('bordo-verde');
+    cognome.classList.add('bordo-verde');
+
+    setTimeout(()=>{
+        nome.classList.remove('bordo-verde');
+        cognome.classList.remove('bordo-verde');
+    },1500);
+}
+
+document.addEventListener('DOMContentLoaded',(event)=>{
+    setTimeout(onSetDatiPersonaliDipendenteMese(),10000);
+})
+
+//Quest'altra ad ogni click di inserisci fumetto va ad inserire dentro la lista fumetti che abbiamo i fumetti che andiamo a scrivere
+// sae uno dei due campi tra nome e autore è vuoto non viene inserito nulla ed esce l'alert
+
+function creaFumetto(){
+    const nomeFumetto = document.getElementById('fumettonome').value;
+    const nomeAutore = document.getElementById('autore').value;
+
+    if(nomeFumetto === '' || nomeAutore === '' ){
+        alert("Riempi prima i campi");
+        return;
+    }
+
+    const fumetto = {
+        nome: nomeFumetto,
+        autore: nomeAutore
+    };
+
+    listaFumetti.push(fumetto);
+    console.log(fumetto);
+
+    console.log(listaFumetti);
+
+    document.getElementById('fumettonome').value = '';
+    document.getElementById('autore').value = '';
+}
+
+//Quest'altra invece mostra a schermo i vari fumetti aggiunti e l'ho fatta come mi hai detto con il for, quindi ad ogni fumetti aggiunto
+//la lista aumenta di uno e viene creato un elemento della lista ul e aggiunto tramite un append
+
+function visualizzaFumetti(){
+    const bxFumetti = document.getElementById('bxFumetti');
+    bxFumetti.innerHTML = '';
+
+    const ul = document.createElement('ul');
+
+    for(let i = 0; i < listaFumetti.length; i++){
+        const li = document.createElement('li');
+        li.textContent = listaFumetti[i].nome;
+        ul.appendChild(li);
+    }
+
+    bxFumetti.appendChild(ul);
+}
